@@ -1,0 +1,89 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Main source for all customer, product, channel, and activity-related data."
+    schema: channeldata  # Replace this with your actual schema if different
+    tables:
+
+      - name: customer
+        description: "Stores customer personal information including contact and demographic details."
+        columns:
+          - name: customer_id
+            description: "Primary key for the customer. Auto-incremented integer."
+          - name: name
+            description: "Full name of the customer."
+          - name: date_birth
+            description: "Date of birth of the customer."
+          - name: email_address
+            description: "Email address used by the customer."
+          - name: phone_number
+            description: "Contact phone number of the customer."
+          - name: country
+            description: "Country of residence."
+          - name: created_at
+            description: "Timestamp when the record was created."
+          - name: updated_at
+            description: "Timestamp when the record was last updated."
+
+      - name: products
+        description: "Contains details about each product available for purchase."
+        columns:
+          - name: product_sku
+            description: "Unique identifier (SKU) for each product. Primary key."
+          - name: product_name
+            description: "Name or title of the product."
+          - name: unit_price
+            description: "Cost per unit of the product."
+          - name: created_at
+            description: "Timestamp when the product was added."
+          - name: updated_at
+            description: "Timestamp of the last update to the product details."
+
+      - name: channels
+        description: "Represents the different channels through which customers interact or make purchases."
+        columns:
+          - name: channel_id
+            description: "Primary key identifier for each channel."
+          - name: channel_name
+            description: "Name of the channel (e.g., Website, Mobile App, Store)."
+          - name: created_at
+            description: "Timestamp when the channel was added."
+          - name: updated_at
+            description: "Timestamp of the most recent update to the channel."
+
+      - name: purchasehistory
+        description: "Historical record of purchases made by customers across channels. Includes quantity, discount, and timestamps."
+        columns:
+          - name: customer_id
+            description: "Foreign key linking to customers table."
+          - name: product_sku
+            description: "Foreign key linking to products table."
+          - name: channel_id
+            description: "Foreign key linking to channels table."
+          - name: quantity
+            description: "Number of units purchased in a transaction."
+          - name: discount
+            description: "Discount applied to the purchase. Defaults to 0."
+          - name: order_date
+            description: "Date and time when the order was placed."
+          - name: created_at
+            description: "Record creation timestamp."
+          - name: updated_at
+            description: "Record last update timestamp."
+
+      - name: visithistory
+        description: "Tracks visits by customers to various channels, including optional bounce information."
+        columns:
+          - name: customer_id
+            description: "Foreign key linking to customers table."
+          - name: channel_id
+            description: "Foreign key linking to channels table."
+          - name: visit_timestamp
+            description: "Timestamp when the visit started."
+          - name: bounce_timestamp
+            description: "Timestamp when the session ended early (bounce), if applicable."
+          - name: createed_at
+            description: "(Typo likely: should be 'created_at') Timestamp when the record was created."
+          - name: updated_at
+            description: "Timestamp of the most recent update."
