@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: dim_channels
+    description: "Dimension table for marketing or sales channels with surrogate and natural keys."
+    columns:
+      - name: sk_channel
+        description: "Surrogate key for channel, generated from nk_channel_id."
+        tests:
+          - not_null
+          - unique
+
+      - name: nk_channel_id
+        description: "Natural key from source system representing channel ID."
+        tests:
+          - not_null
+
+      - name: nk_channel_name
+        description: "Name of the channel, such as 'Online', 'Retail', etc."
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when the record was first created in the source system."
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source system."
+
+  - name: dim_customers
+    description: "Dimension table containing customer details enriched with surrogate keys."
+    columns:
+      - name: sk_customer
+        description: "Surrogate key for customer, generated from nk_customer_id."
+        tests:
+          - not_null
+          - unique
+
+      - name: nk_customer_id
+        description: "Natural key from source system representing the unique customer ID."
+        tests:
+          - not_null
+
+      - name: dsc_name
+        description: "Customer's full name."
+
+      - name: dt_date_birth
+        description: "Customer's date of birth."
+
+      - name: dsc_email_address
+        description: "Email address of the customer."
+
+      - name: dsc_phone_number
+        description: "Phone number of the customer."
+
+      - name: dsc_country
+        description: "Country of residence for the customer."
+
+      - name: dt_created_at
+        description: "Record creation timestamp from the source system."
+
+      - name: dt_updated_at
+        description: "Record update timestamp from the source system."
+
+  - name: dim_products
+    description: "Dimension table for product information including SKU, name, and price with surrogate key."
+    columns:
+      - name: sk_product
+        description: "Surrogate key for product, generated from nk_product_sku."
+        tests:
+          - not_null
+          - unique
+
+      - name: nk_product_sku
+        description: "Natural key representing the product SKU."
+        tests:
+          - not_null
+
+      - name: dsc_product_name
+        description: "Name of the product."
+
+      - name: mtr_unit_price
+        description: "Unit price of the product."
+
+      - name: dt_created_at
+        description: "Timestamp when the product was created in the source system."
+
+      - name: dt_updated_at
+        description: "Timestamp when the product was last updated in the source system."
+
+  - name: dim_date
+    description: "Date dimension table generated using dbt_date from 2024-12-01 to 2025-05-31."
+    columns:
+      - name: date_day
+        description: "The specific calendar date (primary key)."
+        tests:
+          - unique
+          - not_null
+      - name: day_of_week
+        description: "Numeric representation of the weekday."
+      - name: week_start_date
+        description: "Start date of the week containing the date_day."
+      - name: month
+        description: "Month name."
+      - name: year
+        description: "Year of the date."
+
+  - name: fct_purchase_history
+    description: "Fact table for purchase history transactions including revenue and discount metrics."
+    columns:
+      - name: sk_customer
+        description: "Surrogate key for customer."
+      - name: sk_channel
+        description: "Surrogate key for channel."
+      - name: sk_product
+        description: "Surrogate key for product."
+      - name: sk_order_date
+        description: "Date surrogate key from dim_date for the order."
+      - name: mtr_quantity
+        description: "Quantity of products purchased."
+      - name: mtr_discount
+        description: "Discount applied to the order."
+      - name: mtr_unit_price
+        description: "Unit price of the product."
+      - name: mtr_total_amount_gross
+        description: "Total amount before discount."
+      - name: mtr_total_amount_net
+        description: "Total amount after discount."
+
+  - name: fct_visit_history
+    description: "Fact table tracking customer visits and calculating session length in minutes."
+    columns:
+      - name: sk_customer
+        description: "Surrogate key for customer."
+      - name: sk_channel
+        description: "Surrogate key for channel."
+      - name: sk_date_visit
+        description: "Date of visit."
+      - name: dt_visit_timestamp
+        description: "Exact timestamp of visit."
+      - name: dt_bounce_timestamp
+        description: "Timestamp when customer left (if available)."
+      - name: mtr_length_of_stay_minutes
+        description: "Calculated length of session in minutes."

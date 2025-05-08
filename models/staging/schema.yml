@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: stg_channels
+    description: "Staging model for channels data"
+    columns:
+      - name: channel_id
+        description: "Unique ID of the channel"
+        tests:
+          - not_null
+          - unique
+      - name: channel_name
+        description: "Name of the channel"
+      - name: created_at
+        description: "Timestamp when the channel was created"
+      - name: updated_at
+        description: "Timestamp when the channel was last updated"
+
+  - name: stg_products
+    description: "Staging model for products data"
+    columns:
+      - name: product_sku
+        description: "Unique SKU of the product"
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: "Name of the product"
+      - name: unit_price
+        description: "Unit price of the product"
+
+  - name: stg_customers
+    description: "Staging model for customers data"
+    columns:
+      - name: customer_id
+        description: "Unique ID of the customer"
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: "Name of the customer"
+      - name: date_birth
+        description: "Date of birth of the customer"
+      - name: email_address
+        description: "Email address"
+      - name: phone_number
+        description: "Phone number"
+      - name: country
+        description: "Customer's country"
+
+  - name: stg_purchase_history
+    description: "Staging model for purchase history data"
+    columns:
+      - name: customer_id
+        description: "ID of the customer who made the purchase"
+      - name: product_sku
+        description: "Product SKU"
+      - name: channel_id
+        description: "ID of the channel used"
+      - name: quantity
+        description: "Quantity purchased"
+      - name: discount
+        description: "Discount applied to the purchase"
+      - name: order_date
+        description: "Date when the order was placed"
+
+  - name: stg_visit_history
+    description: "Staging model for customer website visits"
+    columns:
+      - name: customer_id
+        description: "ID of the visiting customer"
+      - name: channel_id
+        description: "Channel where the visit happened"
+      - name: visit_timestamp
+        description: "Timestamp of the visit"
+      - name: bounce_timestamp
+        description: "Timestamp if the visit ended in bounce"
